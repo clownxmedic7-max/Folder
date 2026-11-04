@@ -1,0 +1,1620 @@
+COMPUTER NETWORKS LAB - COMPLETE PRACTICAL GUIDE
+================================================================
+
+PART 1 - CISCO PACKET TRACER
+Experiments 3, 4, 9, 10 and 11 - Most important for configuration questions
+================================================================
+
+1. First learn the Packet Tracer interface
+----------------------------------------------------------------
+Cisco Packet Tracer is a simulation software used to create and test computer networks without physical networking devices.
+
+How to open a network project:
+1. Open Cisco Packet Tracer.
+2. Click File -> New.
+3. You will see a large white area. This is your workspace.
+4. At the bottom-left, you will see device categories:
+   - Network Devices
+   - End Devices
+   - Connections
+5. Select a device and drag it into the white workspace.
+6. Use the Connections option to connect devices.
+7. Use Realtime or Simulation mode to test communication.
+
+Remember these categories:
+Device   | Purpose
+PC       | Sends and receives data
+Switch   | Connects multiple computers
+Router   | Connects different networks
+Hub      | Broadcasts data to all ports
+Server   | Provides services like HTTP and DHCP
+
+
+2. HUB network - 4 PCs
+----------------------------------------------------------------
+Question paper Q1
+Question: Create a network using only a HUB and 4 generic PCs. Assign IP addresses and send a PDU.
+
+Step 1 - Add devices
+1. Open Packet Tracer.
+2. Click End Devices.
+3. Drag four PCs into the workspace.
+4. Name them PC0, PC1, PC2 and PC3.
+5. Click Network Devices -> Hubs.
+6. Drag one hub into the workspace.
+
+Step 2 - Connect the devices
+1. Click Connections (lightning symbol).
+2. Select Copper Straight-Through.
+3. Click PC0 -> FastEthernet0.
+4. Click Hub -> Port 0.
+5. Repeat for the remaining PCs using different hub ports.
+
+Your topology should look like this:
+             PC0
+              |
+     PC1 --- HUB --- PC2
+              |
+             PC3
+
+Step 3 - Assign IP addresses
+Do this for each PC:
+1. Double-click PC0.
+2. Click Desktop.
+3. Click IP Configuration.
+4. Select Static.
+5. Enter the IP address and subnet mask.
+
+PC  | IP address   | Subnet mask
+PC0 | 192.168.1.1  | 255.255.255.0
+PC1 | 192.168.1.2  | 255.255.255.0
+PC2 | 192.168.1.3  | 255.255.255.0
+PC3 | 192.168.1.4  | 255.255.255.0
+
+Step 4 - Send a PDU
+1. Change to Simulation mode.
+2. Click Add Simple PDU (envelope icon).
+3. Click PC0.
+4. Click PC3.
+5. Click Auto Capture/Play.
+6. Observe how the hub forwards the frame to all other ports.
+
+Expected observation:
+- Hub broadcasts the incoming frame to all ports except the incoming port.
+- All connected computers receive the frame.
+- Only the destination computer processes the data.
+
+Conclusion: The hub successfully connects four computers in a star topology.
+
+
+3. SWITCH network - 4 PCs
+----------------------------------------------------------------
+Question paper Q2
+Question: Connect four PCs using only a switch. Assign IP addresses and display the MAC address table.
+
+Step 1 - Add devices
+1. Open Packet Tracer.
+2. Select End Devices.
+3. Drag four PCs.
+4. Select Network Devices -> Switches.
+5. Drag a 2960 switch.
+
+Step 2 - Connect devices
+1. Click Connections.
+2. Select Copper Straight-Through.
+3. Connect PC0 to Switch Fa0/1.
+4. Connect PC1 to Fa0/2.
+5. Connect PC2 to Fa0/3.
+6. Connect PC3 to Fa0/4.
+
+Step 3 - Assign IP addresses
+PC  | IP address | Subnet mask
+PC0 | 10.1.1.1   | 255.255.255.0
+PC1 | 10.1.1.2   | 255.255.255.0
+PC2 | 10.1.1.3   | 255.255.255.0
+PC3 | 10.1.1.4   | 255.255.255.0
+
+Follow the same Desktop -> IP Configuration -> Static procedure.
+
+Step 4 - Test connectivity
+1. Open PC0.
+2. Click Desktop -> Command Prompt.
+3. Type:
+ping 10.1.1.3
+
+You should receive:
+Reply from 10.1.1.3
+Reply from 10.1.1.3
+
+Step 5 - Display the MAC address table
+1. Double-click the switch.
+2. Select CLI.
+3. Press Enter.
+4. Type:
+enable
+show mac address-table
+
+You will see the MAC addresses learned by the switch and their corresponding ports.
+
+Step 6 - Observe packet transmission
+1. Select Simulation mode.
+2. Click Add Simple PDU.
+3. Select PC0 -> PC2.
+4. Click Auto Capture/Play.
+5. Observe the packet movement.
+
+Conclusion: The switch learns MAC addresses and forwards frames to the appropriate destination port instead of broadcasting every frame to all ports.
+
+
+4. Difference between HUB and SWITCH
+----------------------------------------------------------------
+(Very important viva question)
+
+HUB                          | SWITCH
+Works at OSI Layer 1         | Works at OSI Layer 2
+Does not learn MAC addresses | Learns MAC addresses
+Broadcasts to all ports      | Forwards based on MAC table
+Less efficient               | More efficient
+Shared bandwidth             | Dedicated switch port bandwidth
+More collisions              | Reduces unnecessary collisions
+
+Easy way to remember:
+- HUB = Sends to everyone.
+- SWITCH = Sends to the correct destination port.
+
+
+5. Combined HUB and SWITCH network
+----------------------------------------------------------------
+Question paper Q3
+Question: Connect PC0, PC1 and PC2 to a hub, and PC3, PC4 and PC5 to a switch.
+
+Step-by-step:
+1. Drag six PCs into the workspace.
+2. Drag one hub.
+3. Drag one switch.
+4. Connect PC0, PC1 and PC2 to the hub.
+5. Connect PC3, PC4 and PC5 to the switch.
+6. Connect the hub to the switch using a suitable Ethernet cable.
+7. Assign the following IP addresses:
+
+PC  | IP address    | Subnet mask
+PC0 | 192.168.10.1  | 255.255.255.0
+PC1 | 192.168.10.2  | 255.255.255.0
+PC2 | 192.168.10.3  | 255.255.255.0
+PC3 | 192.168.10.4  | 255.255.255.0
+PC4 | 192.168.10.5  | 255.255.255.0
+PC5 | 192.168.10.6  | 255.255.255.0
+
+8. Click Simulation mode.
+9. Send a PDU from PC0 to PC1.
+10. Observe the hub's broadcasting behaviour.
+11. Send another PDU from PC0 to PC4.
+12. Observe how the frame travels through the hub and switch.
+
+Observation:
+- PC0 to PC1: The hub broadcasts the frame.
+- PC0 to PC4: The hub forwards the frame to the switch, which forwards it towards the destination.
+
+
+6. LAN configuration using a switch
+----------------------------------------------------------------
+Question paper Q4
+Question: Connect four PCs to an 8-port switch and configure their IP addresses.
+
+Step 1 - Create the topology
+- Add four PCs.
+- Add one 2960 switch.
+- Connect all four PCs to the switch using Copper Straight-Through cables.
+
+Step 2 - Assign IP addresses
+Device | IP address | Subnet mask
+PC1    | 10.1.1.1   | 255.0.0.0
+PC2    | 10.1.1.2   | 255.0.0.0
+PC3    | 10.1.1.3   | 255.0.0.0
+PC4    | 10.1.1.4   | 255.0.0.0
+Switch | 10.1.1.5   | 255.0.0.0
+
+For PCs, use Desktop -> IP Configuration -> Static.
+
+Step 3 - Configure switch management IP
+Double-click the switch -> CLI -> press Enter.
+Type these commands one by one:
+enable
+configure terminal
+interface vlan 1
+ip address 10.1.1.5 255.0.0.0
+no shutdown
+exit
+end
+
+The switch's management IP is now configured.
+
+Step 4 - Check connectivity
+On PC1 -> Desktop -> Command Prompt:
+ping 10.1.1.2
+ping 10.1.1.3
+ping 10.1.1.4
+ping 10.1.1.5
+
+If you get successful replies, connectivity is established.
+
+Step 5 - File sharing (physical Windows LAN)
+1. Select a folder.
+2. Right-click -> Properties.
+3. Open Sharing.
+4. Select Advanced Sharing.
+5. Enable Share this folder.
+6. Give the appropriate network permissions.
+7. Access the shared folder from another authorised PC using its network path.
+
+Packet Tracer's basic PC simulation does not reproduce Windows folder sharing; use its Server-PT HTTP service to demonstrate data transfer instead.
+
+Conclusion: Four computers are successfully connected through a switch and communicate using static IP addresses.
+
+
+7. Subnetting using Cisco Packet Tracer
+----------------------------------------------------------------
+Question paper - two subnets / four subnets
+Basic meaning: Subnetting means dividing one large network into smaller networks.
+
+Example question:
+Create two networks:
+- Network A: 172.16.1.0/24
+- Network B: 172.16.2.0/24
+Connect both networks using a router.
+
+Step 1 - Add devices
+- 1 router (2911 or suitable router with two Ethernet interfaces)
+- 2 switches
+- 6 PCs
+
+Step 2 - Connect devices
+PC0 PC1 PC2
+ |   |   |
+ SWITCH A
+     |
+   ROUTER
+     |
+ SWITCH B
+ |   |   |
+PC3 PC4 PC5
+
+Use Copper Straight-Through cables for PC-to-switch and switch-to-router connections.
+
+Step 3 - Assign IP addresses
+Network A:
+Device | IP address | Gateway
+PC0    | 172.16.1.2 | 172.16.1.1
+PC1    | 172.16.1.3 | 172.16.1.1
+PC2    | 172.16.1.4 | 172.16.1.1
+
+Network B:
+Device | IP address | Gateway
+PC3    | 172.16.2.2 | 172.16.2.1
+PC4    | 172.16.2.3 | 172.16.2.1
+PC5    | 172.16.2.4 | 172.16.2.1
+
+Subnet mask for all PCs: 255.255.255.0
+
+Step 4 - Configure router
+Open Router -> CLI -> press Enter.
+enable
+configure terminal
+
+interface gigabitEthernet 0/0
+ip address 172.16.1.1 255.255.255.0
+no shutdown
+exit
+
+interface gigabitEthernet 0/1
+ip address 172.16.2.1 255.255.255.0
+no shutdown
+exit
+
+end
+
+If your router uses FastEthernet interfaces, select the corresponding interface names instead.
+
+Step 5 - Test connectivity
+Open PC0 -> Command Prompt:
+ping 172.16.2.2
+
+If everything is correct, you should receive replies.
+
+Question: What happens without a router?
+The two different IP subnets cannot communicate through the switches alone. Once the router is connected and configured, communication becomes possible.
+
+Special question: Divide 192.168.10.0/24 into four equal subnets
+You need to borrow 2 bits from the host portion.
+- Original subnet: /24
+- New subnet: /26
+- Subnet mask: 255.255.255.192
+- Each subnet has 64 addresses, 62 usable host addresses.
+
+Subnet | Network address | Usable host range | Broadcast
+1      | 192.168.10.0    | .1 - .62          | .63
+2      | 192.168.10.64   | .65 - .126        | .127
+3      | 192.168.10.128  | .129 - .190       | .191
+4      | 192.168.10.192  | .193 - .254       | .255
+
+For the four-subnet question, use a router with four available routed interfaces or suitable VLAN/subinterface configuration if the equipment supports it. Connect at least two PCs to each subnet.
+
+
+8. Internetworking using a router
+----------------------------------------------------------------
+Question: Connect two different networks using one router.
+
+Use these addresses:
+Device       | IP address    | Gateway
+PC0          | 192.168.10.2  | 192.168.10.1
+PC1          | 192.168.20.2  | 192.168.20.1
+Router Fa0/0 | 192.168.10.1  | -
+Router Fa0/1 | 192.168.20.1  | -
+
+Subnet mask: 255.255.255.0
+
+Step 1: Add one router and two PCs.
+Step 2: Connect PC0 to Router Fa0/0 and PC1 to Router Fa0/1 using straight-through cables.
+Step 3: Configure router interfaces:
+enable
+configure terminal
+
+interface fastEthernet 0/0
+ip address 192.168.10.1 255.255.255.0
+no shutdown
+exit
+
+interface fastEthernet 0/1
+ip address 192.168.20.1 255.255.255.0
+no shutdown
+exit
+
+end
+
+Step 4: Configure PC0 and PC1 with their IP addresses and default gateways from the table.
+Step 5: Test:
+On PC0:
+ping 192.168.20.2
+
+Expected result: Successful communication between the two networks.
+
+Important: The router automatically knows about networks directly connected to its active interfaces. Static routing is needed for additional remote networks.
+
+
+9. Static routing
+----------------------------------------------------------------
+(Important configuration question)
+Static routing means manually adding routes to a router.
+
+Example: Two routers connect two LANs.
+
+Step 1 - Add devices
+- Two routers (R1 and R2)
+- Two switches
+- Two PCs
+Connect each PC to its switch, each switch to its router, and the two routers through a serial link.
+
+Step 2 - Configure the IP addresses
+Device            | IP address
+PC0               | 10.1.1.2/24
+R1 LAN interface  | 10.1.1.1/24
+R1 serial         | 192.168.100.1/30
+R2 serial         | 192.168.100.2/30
+R2 LAN interface  | 10.2.2.1/24
+PC1               | 10.2.2.2/24
+
+PC0 gateway: 10.1.1.1
+PC1 gateway: 10.2.2.1
+
+Step 3 - Configure R1
+enable
+configure terminal
+
+interface gigabitEthernet 0/0
+ip address 10.1.1.1 255.255.255.0
+no shutdown
+exit
+
+interface serial 0/0/0
+ip address 192.168.100.1 255.255.255.252
+no shutdown
+exit
+
+ip route 10.2.2.0 255.255.255.0 192.168.100.2
+
+end
+
+Step 4 - Configure R2
+enable
+configure terminal
+
+interface gigabitEthernet 0/0
+ip address 10.2.2.1 255.255.255.0
+no shutdown
+exit
+
+interface serial 0/0/0
+ip address 192.168.100.2 255.255.255.252
+no shutdown
+exit
+
+ip route 10.1.1.0 255.255.255.0 192.168.100.1
+
+end
+
+If the serial link's DCE end requires a clock rate, configure it on that end:
+clock rate 64000
+
+Step 5 - Verify
+show ip route
+
+Then on PC0:
+ping 10.2.2.2
+
+Conclusion: Static routes allow the routers to forward packets to remote networks.
+
+Backup static route question
+The question paper also has a main route and a backup route.
+
+Example:
+ip route 30.0.0.0 255.0.0.0 20.0.0.2 10
+ip route 30.0.0.0 255.0.0.0 40.0.0.2 20
+
+- Administrative Distance 10 = Main route.
+- Administrative Distance 20 = Backup route.
+The lower administrative distance is preferred.
+
+
+10. RIP routing
+----------------------------------------------------------------
+RIP means Routing Information Protocol.
+It is a dynamic routing protocol. Routers automatically exchange routing information.
+
+Important difference:
+- Static routing: Routes are entered manually.
+- RIP: Routes are learned automatically.
+
+Steps:
+1. Create the topology with three routers connected in a triangle.
+2. Connect PC0 to Router0 and PC1 to Router2.
+3. Assign the IP addresses from the question paper.
+4. Configure all router interfaces with ip address and no shutdown.
+5. Configure RIP on all three routers.
+
+Example Router0:
+enable
+configure terminal
+router rip
+version 2
+no auto-summary
+network 10.0.0.0
+network 192.168.1.0
+end
+
+Example Router1:
+enable
+configure terminal
+router rip
+version 2
+no auto-summary
+network 192.168.1.0
+end
+
+Example Router2:
+enable
+configure terminal
+router rip
+version 2
+no auto-summary
+network 20.0.0.0
+network 192.168.1.0
+end
+
+Use the actual network numbers from the interfaces connected to each router.
+
+Verify:
+show ip route
+
+RIP routes are usually marked with R.
+
+Test:
+ping 20.0.0.2
+
+Conclusion: RIP automatically learns routes and selects the path based on hop count.
+
+
+11. Wireless router, DHCP and Internet Cloud
+----------------------------------------------------------------
+Question paper - wireless internetwork
+
+Step 1 - Add devices
+- Wireless Router
+- PC
+- Laptop
+- Cable Modem
+- Internet Cloud
+- Server
+
+Step 2 - Connect devices
+PC ----- Wireless Router
+              )))
+           Laptop
+
+Wireless Router -> Cable Modem -> Cloud -> Server
+
+Use Ethernet connections for the wired devices. Connect the laptop wirelessly.
+
+Step 3 - Configure wireless router
+1. Double-click the wireless router.
+2. Open GUI or Config.
+3. Set LAN IP address to 192.168.0.1.
+4. Subnet mask: 255.255.255.0.
+5. Enable DHCP.
+6. Set the SSID (wireless network name).
+7. Set wireless security and password.
+
+Step 4 - Configure PC
+1. Open PC -> Desktop.
+2. Click IP Configuration.
+3. Select DHCP.
+
+Step 5 - Configure laptop
+1. Open Laptop.
+2. Go to Desktop -> PC Wireless.
+3. Select the router's SSID.
+4. Enter the wireless security key.
+5. Connect.
+6. Set the IP configuration to DHCP if necessary.
+
+Step 6 - Configure server
+For the question paper's Internet Cloud setup, configure the Cisco.com server with:
+- IP: 208.67.220.220
+- Subnet mask: 255.255.255.0
+- Gateway: 208.67.220.1
+Enable DNS and create an A record for Cisco.com pointing to 208.67.220.220.
+
+Step 7 - Verify
+On the PC:
+ipconfig
+ping 208.67.220.220
+
+If the topology and routing are correctly configured, you should receive replies.
+
+DHCP full form: Dynamic Host Configuration Protocol.
+DHCP automatically assigns IP addresses, subnet masks, gateways and DNS information to clients.
+
+
+================================================================
+PART 2 - WIRESHARK
+Practical 5 - TCP, ARP, DNS, HTTP, ICMP, DHCP and UDP
+================================================================
+
+12. What is Wireshark?
+----------------------------------------------------------------
+Wireshark is a packet-capturing and network-analysis tool.
+It captures network packets and displays their protocol details.
+
+Three important sections:
+1. Packet List - Displays all captured packets.
+2. Packet Details - Displays the selected packet's protocol information.
+3. Packet Bytes - Displays packet data in hexadecimal and ASCII.
+
+
+13. Common procedure for all Wireshark questions
+----------------------------------------------------------------
+This procedure is almost the same for TCP, ARP, DNS, HTTP, ICMP, DHCP and UDP.
+
+Step 1 - Open Wireshark
+1. Open Wireshark.
+2. You will see available network interfaces.
+3. Select your active Ethernet or Wi-Fi interface.
+4. Double-click it to start capturing.
+
+Step 2 - Capture 100 packets
+If your question asks for 100 packets:
+1. Go to Capture -> Options.
+2. Find the capture limit or stop condition.
+3. Set the packet limit to 100 if that option is available.
+4. Start capturing.
+If your version does not provide that option, capture normally and stop after 100 packets.
+
+Step 3 - Apply a filter
+At the top, you will see the Display Filter box.
+Type the filter according to the question.
+
+Question     | Filter
+TCP packets  | tcp
+UDP packets  | udp
+ARP packets  | arp
+DNS packets  | dns
+HTTP packets | http
+ICMP packets | icmp
+DHCP packets | dhcp
+IP packets   | ip
+IP and ICMP  | ip && icmp
+
+Press Enter.
+
+Step 4 - Inspect packet details
+1. Click any packet in the packet list.
+2. Expand the relevant protocol.
+3. Read the required fields.
+4. Record the details in your observation.
+
+Step 5 - Flow Graph
+1. Click Statistics.
+2. Select Flow Graph.
+3. View the communication between source and destination.
+4. Take note of the packet flow.
+
+Step 6 - Save packets
+1. Click File.
+2. Select Save As.
+3. Give a filename such as capture.pcapng.
+4. Click Save.
+
+
+14. TCP packet capture
+----------------------------------------------------------------
+Question paper - TCP
+Question: Capture 100 packets and display only TCP packets. Inspect source port, destination port, sequence number, acknowledgement number and flags.
+
+Procedure:
+1. Open Wireshark.
+2. Select the active network interface.
+3. Start capturing.
+4. Open a browser.
+5. Visit a website.
+6. Return to Wireshark.
+7. Enter:
+tcp
+8. Press Enter.
+9. Click a TCP packet.
+10. Expand Transmission Control Protocol.
+
+Record these fields:
+Field                  | Meaning
+Source Port            | Sender's port
+Destination Port       | Receiver's port
+Sequence Number        | Position of data
+Acknowledgement Number | Next expected byte
+Flags                  | SYN, ACK, FIN, RST, etc.
+
+Flow graph: Statistics -> Flow Graph.
+
+Conclusion: TCP packets were captured and analysed successfully.
+
+
+15. ARP packet capture
+----------------------------------------------------------------
+Question paper - ARP
+ARP full form: Address Resolution Protocol.
+ARP is used to find the MAC address corresponding to an IPv4 address on a local network.
+
+Procedure:
+1. Open Wireshark.
+2. Start capturing.
+3. Open Command Prompt as Administrator if required.
+4. Clear the ARP cache:
+arp -d *
+5. Find your default gateway:
+ipconfig
+6. Ping the gateway:
+ping 192.168.1.1
+Replace the address with your actual default gateway.
+7. Return to Wireshark.
+8. Apply this filter:
+arp
+9. Click an ARP Request.
+10. Expand Address Resolution Protocol.
+11. Inspect the fields.
+
+Important fields:
+Field      | Meaning
+Opcode 1   | ARP Request
+Opcode 2   | ARP Reply
+Sender MAC | MAC address of sender
+Sender IP  | IP address of sender
+Target MAC | Destination MAC
+Target IP  | Destination IP
+
+Viva question: Does ARP have a transport layer header?
+No. ARP does not use TCP or UDP. It works directly over the data-link layer.
+
+
+16. DNS packet capture
+----------------------------------------------------------------
+Question paper - DNS
+DNS full form: Domain Name System.
+DNS converts domain names into IP addresses.
+
+Procedure:
+1. Open Wireshark.
+2. Start capturing.
+3. Open Command Prompt.
+4. Type:
+nslookup www.google.com
+5. Return to Wireshark.
+6. Apply the filter:
+dns
+7. Click the DNS Query packet.
+8. Click the DNS Response packet.
+9. Expand Domain Name System.
+10. Record the details.
+11. Open Statistics -> Flow Graph.
+
+Important points:
+- DNS generally uses UDP port 53.
+- TCP port 53 is also used for certain DNS operations.
+- Query: Requests the IP address.
+- Response: Returns the DNS information.
+
+Conclusion: DNS query and response packets were captured successfully.
+
+
+17. HTTP packet capture
+----------------------------------------------------------------
+Question paper - HTTP
+HTTP full form: Hypertext Transfer Protocol.
+
+Procedure:
+1. Open Wireshark.
+2. Start capturing.
+3. Open a website that uses HTTP.
+4. Apply:
+http
+5. Click the HTTP GET request.
+6. Observe the request details.
+7. Click the HTTP response.
+8. Find the status code.
+9. Right-click a relevant packet.
+10. Select Follow -> TCP Stream.
+
+Important terms:
+Term      | Meaning
+GET       | Requests information from server
+POST      | Sends data to server
+200 OK    | Successful request
+404       | Page not found
+HTTP port | 80
+HTTPS port| 443
+
+Note: Modern websites commonly use HTTPS. If the HTTP filter shows no results, use a plain HTTP test page supplied by your lab or use the encrypted traffic filter tls for HTTPS traffic.
+
+
+18. ICMP packet capture
+----------------------------------------------------------------
+Question paper - ICMP
+ICMP full form: Internet Control Message Protocol.
+ICMP is used for error reporting and network connectivity testing.
+
+Procedure:
+1. Open Wireshark.
+2. Start capturing.
+3. Open Command Prompt.
+4. Type:
+ping 8.8.8.8
+5. Return to Wireshark.
+6. Apply:
+icmp
+7. Click an Echo Request.
+8. Click an Echo Reply.
+9. Expand Internet Control Message Protocol.
+10. Record the fields.
+
+Important fields:
+Type            | Meaning
+8               | Echo Request
+0               | Echo Reply
+Code 0          | Normal Echo Request/Reply
+Identifier      | Identifies ping session
+Sequence Number | Identifies packet order
+TTL             | Time To Live in IP header
+
+Conclusion: ICMP Echo Request and Echo Reply packets were captured.
+
+
+19. DHCP packet capture
+----------------------------------------------------------------
+Question paper - DHCP
+DHCP automatically assigns IP addresses to devices.
+
+Procedure:
+1. Open Wireshark.
+2. Start capturing.
+3. Open Command Prompt as Administrator.
+4. Type:
+ipconfig /release
+5. Then type:
+ipconfig /renew
+6. Return to Wireshark.
+7. Apply:
+dhcp
+If your Wireshark version uses the older display name, try bootp.
+8. Inspect the DHCP packets.
+
+Remember DORA - Very important!
+D - DISCOVER: Client searches for a DHCP server.
+O - OFFER: Server offers an IP address.
+R - REQUEST: Client requests the offered IP.
+A - ACKNOWLEDGEMENT: Server confirms the IP assignment.
+
+
+20. UDP packet capture
+----------------------------------------------------------------
+UDP full form: User Datagram Protocol.
+
+Procedure:
+1. Open Wireshark.
+2. Start capturing.
+3. Generate some network traffic.
+4. Apply:
+udp
+5. Click a UDP packet.
+6. Expand User Datagram Protocol.
+7. Observe the fields.
+
+Important fields:
+Field            | Meaning
+Source Port      | Sender port
+Destination Port | Receiver port
+Length           | UDP header + data length
+Checksum         | Error detection value
+
+Conclusion: UDP packets were captured and analysed successfully.
+
+
+================================================================
+PART 3 - NMAP
+Practical 8 - Live host discovery
+================================================================
+
+21. What is Nmap?
+----------------------------------------------------------------
+Nmap stands for Network Mapper.
+It is used to discover live hosts and examine network services.
+
+For your practical, perform scans only against your assigned lab subnet or an authorised practice environment.
+
+A. ARP scan
+Question: Discover live hosts using ARP.
+
+Command:
+nmap -PR -sn 192.168.1.0/24
+
+Explanation:
+- nmap - Starts Nmap.
+- -PR - Uses ARP discovery.
+- -sn - Host discovery without port scanning.
+- 192.168.1.0/24 - Target subnet.
+Output: Displays the live hosts discovered in the subnet.
+
+B. ICMP scan
+Three types are asked in your question paper.
+Type              | Command option
+ICMP Echo         | -PE
+ICMP Timestamp    | -PP
+ICMP Address Mask | -PM
+
+Commands:
+nmap -PE -sn 192.168.1.0/24
+
+nmap -PP -sn 192.168.1.0/24
+
+nmap -PM -sn 192.168.1.0/24
+
+Remember:
+- PE = Echo
+- PP = Timestamp
+- PM = Address Mask
+
+C. TCP and UDP ping scan
+Scan         | Option | Purpose
+TCP SYN Ping | -PS    | Sends TCP SYN probe
+TCP ACK Ping | -PA    | Sends TCP ACK probe
+UDP Ping     | -PU    | Sends UDP probe
+
+Examples using a permitted lab target:
+nmap -PS80 -sn 192.168.1.0/24
+
+nmap -PA80 -sn 192.168.1.0/24
+
+nmap -PU53 -sn 192.168.1.0/24
+
+Important viva:
+- TCP SYN Ping does not require a privileged account in the same way ACK probing does.
+- TCP ACK Ping normally requires elevated privileges.
+- UDP probes to closed ports may produce ICMP Port Unreachable messages.
+
+D. Reverse DNS lookup
+The question asks you to compare scanning with reverse DNS disabled and enabled.
+nmap -sn -n 192.168.1.0/24
+
+-n = Disable DNS resolution.
+
+nmap -sn -R 192.168.1.0/24
+
+-R = Force reverse DNS resolution.
+
+Difference:
+-n                             | -R
+Does not perform DNS lookups   | Performs reverse DNS lookups
+Usually faster                 | Can take longer
+Displays IP addresses          | May display hostnames
+
+Very important viva:
+Why is ARP sent before ICMP when the destination is on the same subnet?
+Answer: The sender needs the destination MAC address to send the Ethernet frame. ARP obtains that MAC address.
+
+
+================================================================
+PART 4 - PYTHON PROGRAMMING
+Practicals 6, 7, 12, 13 and 14 - Important coding questions
+================================================================
+
+This is probably the part you're most worried about. Let's make it easier.
+
+Before writing any Python program
+How to execute a Python program:
+1. Open VS Code.
+2. Create a new folder.
+3. Create a file, for example hamming.py.
+4. Copy the program below.
+5. Save using Ctrl + S.
+6. Open Terminal -> New Terminal.
+7. Type:
+python hamming.py
+
+If python doesn't work, try:
+py hamming.py
+
+You can use the same procedure for every Python program below.
+
+
+22. Hamming Code - Error Detection and Correction
+----------------------------------------------------------------
+(Very important)
+Aim: To implement error detection and correction using Hamming Code.
+
+What is Hamming Code?
+Hamming Code is an error-correction technique used to detect and correct single-bit errors during data transmission.
+It adds redundant bits (parity bits) to the original data.
+
+For a 4-bit data word, we use a (7,4) Hamming code:
+- 4 data bits.
+- 3 parity bits.
+- Total = 7 bits.
+
+Remember parity positions:
+Position | Bit
+1        | P1
+2        | P2
+3        | D1
+4        | P4
+5        | D2
+6        | D3
+7        | D4
+
+Program - Sender and Receiver
+Create a file called hamming.py.
+
+# HAMMING CODE - SENDER AND RECEIVER
+
+def encode(data):
+    b = [0] * 8
+    b[3] = int(data[0])
+    b[5] = int(data[1])
+    b[6] = int(data[2])
+    b[7] = int(data[3])
+    b[1] = b[3] ^ b[5] ^ b[7]
+    b[2] = b[3] ^ b[6] ^ b[7]
+    b[4] = b[5] ^ b[6] ^ b[7]
+    return ''.join(str(b[i]) for i in range(1, 8))
+
+def decode(code):
+    b = [0] + [int(x) for x in code]
+    s1 = b[1] ^ b[3] ^ b[5] ^ b[7]
+    s2 = b[2] ^ b[3] ^ b[6] ^ b[7]
+    s4 = b[4] ^ b[5] ^ b[6] ^ b[7]
+    error = s1 + (s2 * 2) + (s4 * 4)
+    if error:
+        print("Error at position:", error)
+        b[error] ^= 1
+        print("Corrected code:",
+              ''.join(str(b[i]) for i in range(1, 8)))
+    else:
+        print("No error detected")
+    return ''.join(str(b[i]) for i in [3, 5, 6, 7])
+
+How to execute
+First - Sender:
+python hamming.py
+
+Enter:
+1
+
+Then enter:
+HELLO
+
+The program converts the text into binary, adds Hamming redundant bits and saves the result in a file named channel.
+
+Second - Receiver:
+Run again:
+python hamming.py
+
+Enter:
+2
+
+The receiver reads channel, checks for errors, corrects single-bit errors and displays the original message.
+
+How to test an error:
+1. Open the channel file.
+2. Change one bit in any 7-bit block.
+3. Save the file.
+4. Run the receiver again.
+5. It will display the error position and corrected code.
+
+Expected output:
+No error detected
+Original message: HELLO
+
+If you change one bit, you should see an error position.
+
+Viva questions:
+- What is a parity bit? A bit added for error detection.
+- What is a redundant bit? An additional bit used for error control.
+- How many parity bits are used in (7,4) Hamming Code? Three.
+- What type of error can it correct? Single-bit error.
+
+
+23. Sliding Window Protocol
+----------------------------------------------------------------
+(Very important)
+Aim: To implement flow control using the Sliding Window Protocol.
+
+What is Sliding Window?
+Sliding Window is a flow-control technique that allows the sender to transmit multiple frames before receiving acknowledgements.
+
+Example:
+Suppose:
+- Message = HELLO
+- Window size = 3
+The sender sends:
+Frame 1 -> H
+Frame 2 -> E
+Frame 3 -> L
+
+After receiving acknowledgements, it sends the remaining frames.
+
+Program
+Create sliding.py.
+
+# SLIDING WINDOW PROTOCOL
+
+def sender():
+    message = input("Enter message: ")
+    window = int(input("Enter window size: "))
+
+    frames = [
+        (i + 1, ch)
+        for i, ch in enumerate(message)
+    ]
+
+    with open("Sender_Buffer", "w") as f:
+        for number, data in frames:
+            f.write(f"{number},{data}\n")
+
+    print("\nSender Buffer:")
+
+    start = 0
+    while start < len(frames):
+        end = min(start + window, len(frames))
+
+        for number, data in frames[start:end]:
+            print("Frame:", number, "Data:", data)
+
+        # Receiver checks frames and sends ACK
+        expected = end
+        ack = expected
+
+        with open("Receiver_Buffer", "w") as f:
+            f.write(f"ACK,{ack}")
+
+        print("Received ACK:", ack)
+        start = end
+
+    print("All frames transmitted successfully")
+
+How to execute
+1. Save the file as sliding.py.
+2. Run:
+python sliding.py
+3. Enter 1 for Sender.
+4. Enter the message:
+HELLO
+5. Enter window size:
+3
+6. Sender frames are saved in Sender_Buffer.
+7. Run the program again and select 2 for Receiver.
+8. Receiver reads the frames and saves ACK/NACK information in Receiver_Buffer.
+
+Important: This is a basic file-based demonstration of the sliding-window idea. The sender and receiver are separate runs; a full interactive implementation would repeatedly exchange and verify acknowledgements.
+
+Viva:
+- What is flow control? It controls the rate of data transmission.
+- What is ACK? Acknowledgement.
+- What is NACK? Negative acknowledgement.
+- What is window size? Number of frames allowed to be transmitted before waiting for further acknowledgements.
+
+
+24. TCP Socket Programming - Chat Application
+----------------------------------------------------------------
+(Very important)
+Aim: To develop a chat application using TCP sockets.
+
+TCP full form: Transmission Control Protocol.
+TCP is connection-oriented and provides reliable data transmission.
+
+How does it work?
+        SERVER                CLIENT
+           |                     |
+           |<---- Connection ----|
+           |                     |
+           |<------ Message -----|
+           |                     |
+           |------ Reply ------->|
+           |                     |
+           |<------ Message -----|
+
+Step 1 - Create server.py
+
+import socket
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(("127.0.0.1", 5000))
+server.listen(1)
+
+print("Server waiting for client...")
+
+conn, addr = server.accept()
+print("Connected to:", addr)
+
+while True:
+    data = conn.recv(1024).decode()
+
+    if not data:
+        break
+
+    if data.lower() == "/quit":
+        print("Client ended the chat")
+        break
+
+    print("Client:", data)
+
+    message = input("Server: ")
+    conn.send(message.encode())
+
+    if message.lower() == "/quit":
+        break
+
+conn.close()
+server.close()
+print("Server closed")
+
+Step 2 - Create client.py
+
+import socket
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(("127.0.0.1", 5000))
+
+print("Connected to server")
+
+while True:
+    message = input("Client: ")
+    client.send(message.encode())
+
+    if message.lower() == "/quit":
+        break
+
+    data = client.recv(1024).decode()
+    print("Server:", data)
+
+    if data.lower() == "/quit":
+        break
+
+client.close()
+
+Step 3 - Execute
+You need two terminals.
+
+Terminal 1 - Start server
+python server.py
+
+Terminal 2 - Start client
+python client.py
+
+Now:
+1. Client enters a message.
+2. Server receives the message.
+3. Server enters a reply.
+4. Client receives the reply.
+5. To end the chat, the client can type /quit.
+The server can also terminate the conversation by replying /quit.
+
+Viva:
+- What is a socket? An endpoint for communication between two devices.
+- What is TCP? A connection-oriented protocol.
+- What is bind()? Assigns an IP address and port to a socket.
+- What is listen()? Waits for incoming connections.
+- What is accept()? Accepts a client connection.
+- What is recv()? Receives data.
+- What is send()? Sends data.
+
+
+25. UDP Socket Programming - Chat Application
+----------------------------------------------------------------
+(Very important)
+UDP full form: User Datagram Protocol.
+UDP is connectionless and does not guarantee delivery.
+
+Difference between TCP and UDP:
+TCP                | UDP
+Connection-oriented| Connectionless
+Reliable           | No delivery guarantee
+Uses handshake     | No handshake
+Slower in general  | Lower overhead
+SOCK_STREAM        | SOCK_DGRAM
+
+Step 1 - Create udp_server.py
+
+import socket
+
+server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server.bind(("127.0.0.1", 5001))
+
+print("UDP Server waiting...")
+
+while True:
+    data, addr = server.recvfrom(1024)
+    message = data.decode()
+
+    if message.lower() == "/quit":
+        server.sendto("STOP".encode(), addr)
+        print("Server terminated the chat")
+        break
+
+    print("Client:", message)
+
+    reply = input("Server: ")
+    server.sendto(reply.encode(), addr)
+
+    if reply.lower() == "/quit":
+        server.sendto("STOP".encode(), addr)
+        break
+
+server.close()
+
+Step 2 - Create udp_client.py
+
+import socket
+
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_address = ("127.0.0.1", 5001)
+
+print("Connected to UDP server")
+
+while True:
+    message = input("Client: ")
+    client.sendto(message.encode(), server_address)
+
+    data, addr = client.recvfrom(1024)
+    reply = data.decode()
+
+    if reply == "STOP":
+        print("Server ended the chat")
+        break
+
+    print("Server:", reply)
+
+client.close()
+
+Step 3 - Execute
+Terminal 1:
+python udp_server.py
+
+Terminal 2:
+python udp_client.py
+
+Important: The server can terminate the chat by typing /quit when replying. The client can also end the chat by sending /quit.
+
+Viva:
+- What is UDP? User Datagram Protocol.
+- Which function receives UDP data? recvfrom().
+- Which function sends UDP data? sendto().
+- Does UDP require a connection? No.
+
+
+26. TCP Echo Client-Server Program
+----------------------------------------------------------------
+Aim: Client sends a message to the server, and the server returns the same message.
+
+Server - echo_server.py
+
+import socket
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(("127.0.0.1", 5002))
+server.listen(1)
+
+print("Echo server waiting...")
+
+conn, addr = server.accept()
+
+print("Client IP:", addr[0])
+print("Client Port:", addr[1])
+
+data = conn.recv(1024).decode()
+print("Received:", data)
+
+conn.send(data.encode())
+
+conn.close()
+server.close()
+
+Client - echo_client.py
+
+import socket
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(("127.0.0.1", 5002))
+
+message = input("Enter message: ")
+client.send(message.encode())
+
+data = client.recv(1024).decode()
+print("Echo from server:", data)
+
+client.close()
+
+Execution:
+python echo_server.py
+
+Open another terminal:
+python echo_client.py
+
+Enter:
+Hello Server
+
+Expected output:
+Echo from server: Hello Server
+
+The server also displays the client's IP address and port number.
+
+
+27. UDP Echo Program - Server Termination
+----------------------------------------------------------------
+Aim: Implement an echo application using UDP sockets where the server can terminate communication.
+
+Server - udp_echo_server.py
+
+import socket
+
+server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server.bind(("127.0.0.1", 5003))
+
+print("UDP Echo Server started")
+
+while True:
+    data, addr = server.recvfrom(1024)
+    message = data.decode()
+
+    print("Client:", message)
+
+    if message.lower() == "/quit":
+        server.sendto("STOP".encode(), addr)
+        break
+
+    server.sendto(data, addr)
+
+server.close()
+
+Client - udp_echo_client.py
+
+import socket
+
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server = ("127.0.0.1", 5003)
+
+while True:
+    message = input("Enter message: ")
+    client.sendto(message.encode(), server)
+
+    data, addr = client.recvfrom(1024)
+    reply = data.decode()
+
+    if reply == "STOP":
+        print("Server terminated communication")
+        break
+
+    print("Echo:", reply)
+
+client.close()
+
+Expected result: Whatever the client sends is returned by the server. When the server receives /quit, it sends STOP and terminates.
+
+
+28. Implement your own PING program
+----------------------------------------------------------------
+Question paper - Ping
+Aim: To implement a program that checks network connectivity and displays round-trip time.
+
+Ping uses ICMP (Internet Control Message Protocol).
+For an easy Windows-compatible lab demonstration, use Python to execute the system's ping command and display its reply and RTT.
+
+Create myping.py.
+
+import subprocess
+import platform
+import re
+
+host = input("Enter destination IP: ")
+
+count_option = "-n" if platform.system() == "Windows" else "-c"
+
+command = ["ping", count_option, "4", host]
+
+result = subprocess.run(
+    command,
+    capture_output=True,
+    text=True
+)
+
+print("\nPING OUTPUT:\n")
+print(result.stdout)
+
+times = re.findall(
+    r"time[=<]\s*([\d.]+)\s*ms",
+    result.stdout,
+    re.IGNORECASE
+)
+
+if times:
+    print("Round Trip Times:")
+    for t in times:
+        print(t, "ms")
+else:
+    print("No successful reply received")
+
+Execution:
+python myping.py
+
+Enter:
+8.8.8.8
+
+Expected output:
+PING OUTPUT:
+
+Reply from 8.8.8.8
+Reply from 8.8.8.8
+
+Round Trip Times:
+25 ms
+
+The RTT values are examples; actual results depend on your network.
+
+Viva:
+- What is Ping? A connectivity testing utility.
+- Which protocol does Ping use? ICMP.
+- What is RTT? Round Trip Time.
+- What does Request Timed Out mean? No reply was received within the allowed time.
+
+
+29. RAW Socket - Packet Sniffing
+----------------------------------------------------------------
+(Important coding question)
+Aim: To capture packets and display their header information using RAW sockets.
+
+A packet sniffer captures and analyses network packets.
+
+Important fields asked in your question paper:
+- Source IP address
+- Destination IP address
+- IP version
+- Header length
+- TTL
+- Protocol
+- TCP source port
+- TCP destination port
+- TCP flags
+- ICMP type and code
+
+Create sniffer.py:
+
+This is for examining traffic on your own authorised lab machine. On Windows, run the terminal as Administrator.
+
+import socket
+import struct
+
+HOST = socket.gethostbyname(socket.gethostname())
+
+try:
+    sniffer = socket.socket(
+        socket.AF_INET,
+        socket.SOCK_RAW,
+        socket.IPPROTO_IP
+    )
+
+    sniffer.bind((HOST, 0))
+
+    sniffer.setsockopt(
+        socket.IPPROTO_IP,
+        socket.IP_HDRINCL,
+        1
+    )
+
+    sniffer.ioctl(
+        socket.SIO_RCVALL,
+        socket.RCVALL_ON
+    )
+
+    print("Packet Sniffer Started...")
+    print("Press Ctrl+C to stop")
+
+    while True:
+        packet, address = sniffer.recvfrom(65565)
+
+        # IP Header
+        first = packet[0]
+        version = first >> 4
+
+        # ---- NOTE: the source text ended at the line above. ----
+        # ---- The remainder below completes the program.     ----
+        ihl = (first & 0xF) * 4
+        ttl = packet[8]
+        proto = packet[9]
+        src = socket.inet_ntoa(packet[12:16])
+        dst = socket.inet_ntoa(packet[16:20])
+
+        print("\nIP Version:", version)
+        print("Header Length:", ihl, "bytes")
+        print("TTL:", ttl)
+        print("Protocol:", proto)
+        print("Source IP:", src)
+        print("Destination IP:", dst)
+
+        if proto == 6:      # TCP
+            sport, dport = struct.unpack("!HH", packet[ihl:ihl + 4])
+            flags = packet[ihl + 13]
+            print("TCP Source Port:", sport)
+            print("TCP Destination Port:", dport)
+            print("TCP Flags:", bin(flags))
+        elif proto == 1:    # ICMP
+            icmp_type, icmp_code = struct.unpack("!BB", packet[ihl:ihl + 2])
+            print("ICMP Type:", icmp_type)
+            print("ICMP Code:", icmp_code)
+
+except KeyboardInterrupt:
+    sniffer.ioctl(socket.SIO_RCVALL, socket.RCVALL_OFF)
+    print("\nSniffer stopped")
+except Exception as e:
+    print("Error:", e)
+
+Execution:
+python sniffer.py
+
+Generate some traffic from your own computer while the sniffer is running.
+
+Remember:
+Protocol number | Protocol
+1               | ICMP
+6               | TCP
+17              | UDP
+
+This Windows-specific example uses SIO_RCVALL. On Linux, raw packet capture uses different socket permissions and APIs. If the lab computer blocks raw sockets, use Wireshark for the packet-capture demonstration.
+
+Conclusion: The program captures IP packets and displays their header information, including TCP or ICMP fields where applicable.
+
+================================================================
+END OF GUIDE
+================================================================
